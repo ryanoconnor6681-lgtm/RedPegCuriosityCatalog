@@ -23,12 +23,253 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: var(--bg);
+    background: #0a0a0a;
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
   }
+
+  /* =====================
+     INTRO EXPERIENCE
+  ===================== */
+  #intro {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  #intro.exit {
+    animation: introExit 0.7s cubic-bezier(0.77,0,0.175,1) forwards;
+  }
+
+  @keyframes introExit {
+    0%   { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.04); pointer-events: none; }
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    opacity: 0;
+    pointer-events: none;
+    text-align: center;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+    animation: slideFadeIn 0.6s ease forwards;
+  }
+
+  .slide.exit-slide {
+    animation: slideFadeOut 0.35s ease forwards;
+  }
+
+  @keyframes slideFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideFadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-10px); }
+  }
+
+  .slide-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #FF3D00;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: none;
+  }
+
+  .slide.active .slide-label {
+    animation: fadeUp 0.5s 0.2s ease forwards;
+  }
+
+  .slide-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 9vw, 110px);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    color: #ffffff;
+    max-width: 900px;
+    opacity: 0;
+  }
+
+  .slide.active .slide-headline {
+    animation: fadeUp 0.6s 0.15s ease forwards;
+  }
+
+  .slide-headline .red { color: #FF3D00; }
+  .slide-headline .dim { color: #555; }
+
+  .slide-sub {
+    margin-top: 28px;
+    font-size: clamp(15px, 2vw, 20px);
+    color: #888;
+    font-weight: 300;
+    max-width: 560px;
+    line-height: 1.6;
+    opacity: 0;
+  }
+
+  .slide.active .slide-sub {
+    animation: fadeUp 0.6s 0.35s ease forwards;
+  }
+
+  .slide-stat {
+    margin-top: 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    opacity: 0;
+  }
+
+  .slide.active .slide-stat {
+    animation: fadeUp 0.6s 0.5s ease forwards;
+  }
+
+  .stat-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 14vw, 160px);
+    color: #FF3D00;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+
+  .stat-unit {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 5vw, 60px);
+    color: #444;
+    line-height: 1;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Progress dots */
+  .intro-nav {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 1001;
+  }
+
+  .intro-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #333;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .intro-dot.active { background: #FF3D00; width: 20px; border-radius: 3px; }
+
+  /* Skip / Continue hints */
+  .intro-hint {
+    position: fixed;
+    bottom: 40px;
+    right: 48px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #333;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .intro-hint:hover { color: #FF3D00; }
+  .intro-hint-arrow { font-size: 14px; }
+
+  .intro-skip {
+    position: fixed;
+    bottom: 40px;
+    left: 48px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #2a2a2a;
+    z-index: 1001;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .intro-skip:hover { color: #555; }
+
+  /* Last slide CTA */
+  .slide-cta {
+    margin-top: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #FF3D00;
+    color: white;
+    padding: 16px 36px;
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    border: none;
+    opacity: 0;
+    transition: background 0.15s;
+  }
+
+  .slide.active .slide-cta {
+    animation: fadeUp 0.6s 0.6s ease forwards;
+  }
+
+  .slide-cta:hover { background: #e03500; }
+
+  /* Divider line on some slides */
+  .slide-line {
+    width: 40px;
+    height: 2px;
+    background: #FF3D00;
+    margin: 24px auto;
+    opacity: 0;
+  }
+
+  .slide.active .slide-line {
+    animation: fadeUp 0.4s 0.3s ease forwards;
+  }
+
+  /* =====================
+     MAIN CATALOG
+  ===================== */
+  #catalog {
+    display: none;
+    background: var(--bg);
+  }
+
+  #catalog.visible { display: block; }
 
   .header {
     padding: 48px 40px 32px;
@@ -303,6 +544,11 @@
   .tag-type { background: rgba(255,61,0,0.09); color: var(--accent); }
   .tag-audience { background: rgba(196,122,0,0.09); color: var(--accent2); }
 
+  .card[data-type="belief"] .tag-type {
+    background: rgba(99,60,180,0.09);
+    color: #6633cc;
+  }
+
   .card-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 26px;
@@ -424,6 +670,155 @@
 </head>
 <body>
 
+<!-- ===================== INTRO EXPERIENCE ===================== -->
+<div id="intro">
+
+  <!-- SLIDE 1 -->
+  <div class="slide active" id="slide-0">
+    <div class="slide-label">RedPeg × AI · 2025</div>
+    <div class="slide-headline"><span class="dim">You've heard</span><br><span class="dim">of AI.</span><br>Good.</div>
+    <div class="slide-sub">You might even use it. A few times a week. For a few things. That's where most people are right now.</div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide" id="slide-1">
+    <div class="slide-label">1988</div>
+    <div class="slide-headline">You use a<br>laptop.<br><span class="red">Every day!?</span></div>
+    <div class="slide-sub">Imagine dropping someone from 1988 into your office today. Watching you work. That reaction — disbelief, then wonder — is the same one people will have looking back at us right now.</div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide" id="slide-2">
+    <div class="slide-label">2004</div>
+    <div class="slide-headline">Your phone<br>is just for<br><span class="red">calls, right?</span></div>
+    <div class="slide-sub">Imagine telling someone in 2004 that their phone would be the first thing they touched in the morning and the last thing at night. Entertainment. Research. Navigation. Work. Life. They wouldn't have believed you.</div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide" id="slide-3">
+    <div class="slide-label">Now</div>
+    <div class="slide-headline">AI is that.<br><span class="red">Times ten.</span></div>
+    <div class="slide-line"></div>
+    <div class="slide-sub">And it's moving faster than either of those did. This is not a tool you add to your workflow. This is how work gets done now.</div>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="slide" id="slide-4">
+    <div class="slide-label">What the flip looks like</div>
+    <div class="slide-headline">Phase 1 RFP<br>response.</div>
+    <div class="slide-stat"><div class="stat-big">&lt;5</div><div class="stat-unit">min.</div></div>
+    <div class="slide-sub">Sharp follow-up questions that show you've thought deeper than anyone else in the room. Company background, relevant history, case studies pulled and shaped. Done before the competition has opened the brief.</div>
+  </div>
+
+  <!-- SLIDE 6 -->
+  <div class="slide" id="slide-5">
+    <div class="slide-label">What the flip looks like</div>
+    <div class="slide-headline">Budget SOW.<br>First draft.</div>
+    <div class="slide-stat"><div class="stat-big">&lt;10</div><div class="stat-unit">min.</div></div>
+    <div class="slide-sub">Describe the scope. Get a structured draft back. Edit the 20% that needs your judgment. Send it.</div>
+  </div>
+
+  <!-- SLIDE 7 -->
+  <div class="slide" id="slide-6">
+    <div class="slide-label">What the flip looks like</div>
+    <div class="slide-headline">600 emails.<br>Sorted &amp; drafted.</div>
+    <div class="slide-stat"><div class="stat-big">&lt;5</div><div class="stat-unit">min.</div></div>
+    <div class="slide-sub">Not one at a time. All of them. Flagged by priority. Drafts waiting for your approval. You review. You send.</div>
+  </div>
+
+  <!-- SLIDE 8 -->
+  <div class="slide" id="slide-7">
+    <div class="slide-label">What the flip looks like</div>
+    <div class="slide-headline">Client brief<br>to working<br><span class="red">deck.</span></div>
+    <div class="slide-stat"><div class="stat-big">&lt;15</div><div class="stat-unit">min.</div></div>
+    <div class="slide-sub">Ideation. Concepts. Structured into a presentation you can actually take into the room. Built while you made coffee.</div>
+  </div>
+
+  <!-- SLIDE 9 -->
+  <div class="slide" id="slide-8">
+    <div class="slide-label">The question</div>
+    <div class="slide-headline">How do you<br>want to spend<br><span class="red">your time?</span></div>
+    <div class="slide-sub">Asking AI to spell check one email? Or asking the savant — the one who knows law, code, strategy, and your clients — to clear your whole morning?</div>
+  </div>
+
+  <!-- SLIDE 10 -->
+  <div class="slide" id="slide-9">
+    <div class="slide-label">Vending-Bench 2 · Andon Labs · 2026</div>
+    <div class="slide-headline"><span class="red">#1 and #2.</span><br><span class="dim">Every AI.<br>In the world.</span></div>
+    <div class="slide-line"></div>
+    <div class="slide-sub">Given $500 to run a vending machine business for a simulated year. Claude Opus finished with $8,017. Claude Sonnet: $7,204. ChatGPT: $6,144. Gemini: $5,478. Claude didn't just win — it lapped the field. This is your colleague.</div>
+  </div>
+
+  <!-- SLIDE 11 -->
+  <div class="slide" id="slide-10">
+    <div class="slide-label">McKinsey · 2024</div>
+    <div class="slide-stat">
+      <div class="stat-big">2</div>
+      <div class="stat-unit">hrs<br>back.<br>daily.</div>
+    </div>
+    <div class="slide-sub">Every day. For the rest of your career. That's what using AI for everything — not just one or two things — actually looks like.</div>
+  </div>
+
+  <!-- SLIDE 12 -->
+  <div class="slide" id="slide-11">
+    <div class="slide-label">This is not optional</div>
+    <div class="slide-headline">This is how<br>RedPeg<br><span class="red">competes.</span></div>
+    <div class="slide-line"></div>
+    <div class="slide-sub">Not the agency that talks about AI. The agency that runs on it. The flip isn't coming. It's here. We're making it now.</div>
+  </div>
+
+  <!-- SLIDE 13 -->
+  <div class="slide" id="slide-12">
+    <div class="slide-label">A question</div>
+    <div class="slide-headline">What's your<br>most used<br><span class="dim">program?</span></div>
+    <div class="slide-sub">Asana? Outlook? Teams? Excel? Slack?</div>
+  </div>
+
+  <!-- SLIDE 14 -->
+  <div class="slide" id="slide-13">
+    <div class="slide-label">The answer</div>
+    <div class="slide-headline"><span class="dim">Wrong.</span><br>It's going<br>to be<br><span class="red">Claude.</span></div>
+    <div class="slide-sub">Not because someone told you to. Because once you make the flip — you won't go back.</div>
+  </div>
+
+  <!-- SLIDE 15: CTA -->
+  <div class="slide" id="slide-14">
+    <div class="slide-label">RedPeg Marketing</div>
+    <div class="slide-headline">Find your<br><span class="red">door in.</span></div>
+    <div class="slide-sub">Everyone gets there differently. Find the thing that clicks for you — and take one real step today.</div>
+    <button class="slide-cta" onclick="exitIntro()">
+      Open the Catalog
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+    </button>
+  </div>
+
+</div>
+
+<!-- Progress dots -->
+<div class="intro-nav" id="intro-nav">
+  <div class="intro-dot active" onclick="goToSlide(0)"></div>
+  <div class="intro-dot" onclick="goToSlide(1)"></div>
+  <div class="intro-dot" onclick="goToSlide(2)"></div>
+  <div class="intro-dot" onclick="goToSlide(3)"></div>
+  <div class="intro-dot" onclick="goToSlide(4)"></div>
+  <div class="intro-dot" onclick="goToSlide(5)"></div>
+  <div class="intro-dot" onclick="goToSlide(6)"></div>
+  <div class="intro-dot" onclick="goToSlide(7)"></div>
+  <div class="intro-dot" onclick="goToSlide(8)"></div>
+  <div class="intro-dot" onclick="goToSlide(9)"></div>
+  <div class="intro-dot" onclick="goToSlide(10)"></div>
+  <div class="intro-dot" onclick="goToSlide(11)"></div>
+  <div class="intro-dot" onclick="goToSlide(12)"></div>
+  <div class="intro-dot" onclick="goToSlide(13)"></div>
+  <div class="intro-dot" onclick="goToSlide(14)"></div>
+</div>
+
+<div class="intro-skip" onclick="exitIntro()">Skip</div>
+<div class="intro-hint" onclick="nextSlide()"><span>Tap anywhere to continue</span> <span class="intro-hint-arrow">→</span></div>
+
+<!-- ===================== CATALOG ===================== -->
+<div id="catalog">
+
 <div class="header">
   <div class="header-label">RedPeg Marketing — Internal Resource</div>
   <h1>AI<br><span>Curiosity</span><br>Catalog</h1>
@@ -432,11 +827,11 @@
 
 <div class="stat-bar">
   <div class="stat">
-    <div class="stat-num" id="total-count">9</div>
+    <div class="stat-num" id="total-count">14</div>
     <div class="stat-label">Entry points into AI</div>
   </div>
   <div class="stat">
-    <div class="stat-num">4</div>
+    <div class="stat-num">5</div>
     <div class="stat-label">Learning styles covered</div>
   </div>
   <div class="stat">
@@ -548,6 +943,7 @@
 <div class="filter-bar">
   <span class="filter-label">Show me:</span>
   <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="belief">Belief</button>
   <button class="filter-btn" data-filter="history">History</button>
   <button class="filter-btn" data-filter="fear">Fear → Confidence</button>
   <button class="filter-btn" data-filter="inspiration">Inspiration</button>
@@ -765,9 +1161,132 @@
     <button class="toggle-btn" onclick="toggleCard(this)"><span class="toggle-arrow">▼</span> <span>Read more</span></button>
   </div>
 
-</div>
+  <!-- CARD: GENIUS ON STAFF -->
+  <div class="card" data-type="belief">
+    <div class="card-top">
+      <div class="card-icon">🎓</div>
+      <div class="card-tags">
+        <span class="tag tag-type">Belief</span>
+        <span class="tag tag-audience">Everyone</span>
+      </div>
+    </div>
+    <div class="card-title">Meet Your New Colleague</div>
+    <div class="card-hook">Former doctor, lawyer, coder, strategist, creative director. Speaks every language. Available 24/7. You're already paying for them.</div>
+    <div class="card-body">
+      <p>Claude scored in the 90th percentile on the Bar Exam. Top marks on the US Medical Licensing Exam. 95th percentile on the GRE. It outperforms most humans on standardized tests across law, medicine, math, coding, and science. This is not a search engine. This is a colleague with credentials most of us will never have.</p>
+      <p>And it's sitting in a browser tab you open twice a week to ask one question.</p>
+      <p>McKinsey research found knowledge workers using AI save 1.5 to 2 hours every day — not because the tool is magical, but because they actually ask it things. Consistently. For everything. That's a full extra workday every week, compounding.</p>
+      <p>At RedPeg, we have one of the most capable thinking partners ever built available to every person on the team. The question is whether we're using it like a colleague or like a calculator we pull out for specific problems.</p>
+      <div class="takeaway">"You wouldn't hire a brilliant strategist and only ask them to fix your typos. Stop doing that with Claude."</div>
+      <div class="prompts-label">Try these in Claude →</div>
+      <div class="prompt-item" onclick="copyPrompt(this)">"I work in [your role] at an experiential marketing agency. What are the 5 most valuable ways you could help me this week — be specific to my actual job, not generic AI advice."</div>
+      <div class="prompt-item" onclick="copyPrompt(this)">"What do you actually know about experiential marketing, event production, and brand activations? Walk me through it like you're briefing a new hire."</div>
+      <button class="toggle-btn" onclick="toggleCard(this)"><span class="toggle-arrow">▼</span> <span>Collapse</span></button>
+    </div>
+    <button class="toggle-btn" onclick="toggleCard(this)"><span class="toggle-arrow">▼</span> <span>Read more</span></button>
+  </div>
 
-<div class="toast" id="toast">Prompt copied to clipboard</div>
+  <!-- CARD: YOU DON'T HAVE TO TRAIN IT -->
+  <div class="card" data-type="belief">
+    <div class="card-top">
+      <div class="card-icon">🚫</div>
+      <div class="card-tags">
+        <span class="tag tag-type">Belief</span>
+        <span class="tag tag-audience">Skeptics</span>
+      </div>
+    </div>
+    <div class="card-title">You Don't Have to Train It</div>
+    <div class="card-hook">You don't spend weeks teaching Claude to answer an RFP. You just... ask. Right now. With no setup.</div>
+    <div class="card-body">
+      <p>One of the most common reasons people delay using Claude is the belief that there's a setup phase — that you need to "train" it before it's useful, the way you'd onboard a new employee. There isn't. There's no training. There's just asking.</p>
+      <p>Claude already knows experiential marketing, RFP writing, client communications, brand strategy, event production, and creative development. Not because you taught it — because it was trained on more relevant material than any person could read in a lifetime. You bring the context of your specific situation. It brings the capability.</p>
+      <p>The "training" people think they need is actually just good prompting — and good prompting is just being specific. Tell it what you're working on. Tell it who it's for. Tell it what format you want. That's the whole setup. You can learn it in one conversation.</p>
+      <div class="takeaway">"The setup is describing your task. That's the entire setup. You already know how to do it."</div>
+      <div class="prompts-label">Try these in Claude →</div>
+      <div class="prompt-item" onclick="copyPrompt(this)">"I need to respond to an RFP for [client/category]. Here's what I know: [paste details]. Draft a compelling executive summary and a breakdown of our relevant experience."</div>
+      <div class="prompt-item" onclick="copyPrompt(this)">"I'm going to describe a work task I've been putting off because I thought I'd need to set AI up first. Here it is: [describe task]. How should we approach this right now?"</div>
+      <button class="toggle-btn" onclick="toggleCard(this)"><span class="toggle-arrow">▼</span> <span>Collapse</span></button>
+    </div>
+    <button class="toggle-btn" onclick="toggleCard(this)"><span class="toggle-arrow">▼</span> <span>Read more</span></button>
+  </div>
+
+  <!-- CARD: THE ABACUS -->
+  <div class="card" data-type="belief">
+    <div class="card-top">
+      <div class="card-icon">🖥️</div>
+      <div class="card-tags">
+        <span class="tag tag-type">Belief</span>
+        <span class="tag tag-audience">Everyone</span>
+      </div>
+    </div>
+    <div class="card-title">The Computer Under the Paperwork</div>
+    <div class="card-hook">You have a computer. It's sitting under the pile of work you're doing by hand.</div>
+    <div class="card-body">
+      <p>Imagine someone handed you a laptop in 1985 and you said "I'll learn to use this in my spare time" — then kept doing your work by hand while the computer sat in the corner. That's what treating AI as a side skill looks like right now.</p>
+      <p>AI is not a software tool you add to your stack, like learning a new Asana feature. It's the medium your work should live in. 90% of what you do every day — writing, thinking, researching, planning, communicating — Claude can do faster alongside you. Not instead of you. Alongside you.</p>
+      <p>The people at other agencies integrating this now are not smarter or more technical. They just started earlier. The gap compounds. A person saving 90 minutes a day has an extra 7.5 hours a week — nearly a full extra workday — compared to someone who doesn't.</p>
+      <div class="takeaway">"This is not a tool you learn on the side. It's the thing everything else runs on now."</div>
+      <div class="prompts-label">Try these in Claude →</div>
+      <div class="prompt-item" onclick="copyPrompt(this)">"Walk me through what a full workday could look like if I actually used you for everything — from first email to last deliverable. My role is [your role]."</div>
+      <div class="prompt-item" onclick="copyPrompt(this)">"What percentage of a typical [your role]'s workday involves tasks you could meaningfully help with? Be honest and specific."</div>
+      <button class="toggle-btn" onclick="toggleCard(this)"><span class="toggle-arrow">▼</span> <span>Collapse</span></button>
+    </div>
+    <button class="toggle-btn" onclick="toggleCard(this)"><span class="toggle-arrow">▼</span> <span>Read more</span></button>
+  </div>
+
+  <!-- CARD: TRY IT RIGHT NOW -->
+  <div class="card" data-type="practical">
+    <div class="card-top">
+      <div class="card-icon">🎯</div>
+      <div class="card-tags">
+        <span class="tag tag-type">Practical</span>
+        <span class="tag tag-audience">Right now</span>
+      </div>
+    </div>
+    <div class="card-title">Stop Reading. Try It Right Now.</div>
+    <div class="card-hook">Pick the task from your actual to-do list. Paste it in. See what happens. That's the entire experiment.</div>
+    <div class="card-body">
+      <p>No more reading about AI. No more demos. Open Claude in a new tab. Pick one of these — the one that costs you the most time today — and just go.</p>
+      <p><strong>The RFP you're dreading.</strong> Paste the brief. Ask Claude to draft the executive summary. 45 seconds.</p>
+      <p><strong>The recap you've been putting off.</strong> Paste your bullet notes. Ask for a client-ready version in your brand tone. 30 seconds.</p>
+      <p><strong>The client you know nothing about.</strong> Type their name and category. Ask Claude to brief you like you have 10 minutes before a call. Better than Google.</p>
+      <p><strong>The email thread that's been sitting there.</strong> Paste the whole thread. Ask what the three most important action items are and draft the reply. Under a minute.</p>
+      <p>The moment you get a result that surprises you — that's the switch. Everything changes after that moment. You are one task away from never working the old way again.</p>
+      <div class="takeaway">"You are one task away from never working the old way again."</div>
+      <div class="prompts-label">Copy one and go →</div>
+      <div class="prompt-item" onclick="copyPrompt(this)">"Here's an RFP brief I need to respond to: [paste]. Draft a strong executive summary and a section on our relevant experience. Tone: confident, specific, client-first."</div>
+      <div class="prompt-item" onclick="copyPrompt(this)">"Here's an email thread that needs a response: [paste thread]. Tell me the 3 key action items and draft a reply I can edit and send."</div>
+      <button class="toggle-btn" onclick="toggleCard(this)"><span class="toggle-arrow">▼</span> <span>Collapse</span></button>
+    </div>
+    <button class="toggle-btn" onclick="toggleCard(this)"><span class="toggle-arrow">▼</span> <span>Read more</span></button>
+  </div>
+
+  <!-- CARD: I BELIEVE IT BUT -->
+  <div class="card" data-type="belief">
+    <div class="card-top">
+      <div class="card-icon">💭</div>
+      <div class="card-tags">
+        <span class="tag tag-type">Belief</span>
+        <span class="tag tag-audience">Almost there</span>
+      </div>
+    </div>
+    <div class="card-title">"I Believe It. I Just Don't Think About It."</div>
+    <div class="card-hook">Converted but not integrated. This is the last gap — and it's a habit problem, not a knowledge problem.</div>
+    <div class="card-body">
+      <p>Some people have seen the demos. They believe Claude is capable. They've even used it and gotten great results. But it's still not the first place they go. When a task lands on their desk, the instinct is still to open a blank doc and start — not to open Claude first.</p>
+      <p>That gap isn't about knowledge. It's about habit formation. The tool isn't wired into the reflex yet. And habits don't form from information — they form from repetition plus immediate reward.</p>
+      <p>The fix is simple but requires a commitment: for the next two weeks, Claude is your first move on every task. Not sometimes. Every time. Even the small ones. Especially the small ones. The reflex builds through repetition, not resolution.</p>
+      <p>Within two weeks, opening Claude will feel like opening email. You won't remember deciding to use it. You'll just do it — because the output is better and you've proved that to yourself enough times that your brain stopped arguing.</p>
+      <div class="takeaway">"The goal isn't to remember to use AI. It's to use it enough times that forgetting becomes impossible."</div>
+      <div class="prompts-label">Try these in Claude →</div>
+      <div class="prompt-item" onclick="copyPrompt(this)">"I've used you before and gotten good results, but I keep forgetting to start with you. Help me build a simple habit. What's a realistic 'Claude first' trigger I could use every morning?"</div>
+      <div class="prompt-item" onclick="copyPrompt(this)">"Design me a 10-day challenge where each day I use Claude for one specific task in my role as [your role]. Start easy, get progressively more powerful."</div>
+      <button class="toggle-btn" onclick="toggleCard(this)"><span class="toggle-arrow">▼</span> <span>Collapse</span></button>
+    </div>
+    <button class="toggle-btn" onclick="toggleCard(this)"><span class="toggle-arrow">▼</span> <span>Read more</span></button>
+  </div>
+
+</div>
 
 <script>
   function toggleCard(btn) {
@@ -828,7 +1347,6 @@
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 2000);
     }).catch(() => {
-      // Fallback for older browsers
       const ta = document.createElement('textarea');
       ta.value = text;
       document.body.appendChild(ta);
@@ -840,6 +1358,88 @@
       setTimeout(() => toast.classList.remove('show'), 2000);
     });
   }
+
+  // =====================
+  // INTRO LOGIC
+  // =====================
+  const TOTAL_SLIDES = 15;
+  let currentSlide = 0;
+  let introActive = true;
+  let transitioning = false;
+
+  function goToSlide(n) {
+    if (transitioning || n === currentSlide) return;
+    transitioning = true;
+
+    const current = document.getElementById('slide-' + currentSlide);
+    const next = document.getElementById('slide-' + n);
+
+    current.classList.add('exit-slide');
+    setTimeout(() => {
+      current.classList.remove('active', 'exit-slide');
+      next.classList.add('active');
+      currentSlide = n;
+      updateDots();
+      transitioning = false;
+    }, 350);
+  }
+
+  function nextSlide() {
+    if (!introActive) return;
+    if (currentSlide < TOTAL_SLIDES - 1) {
+      goToSlide(currentSlide + 1);
+    } else {
+      exitIntro();
+    }
+  }
+
+  function updateDots() {
+    document.querySelectorAll('.intro-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentSlide);
+    });
+    const hint = document.querySelector('.intro-hint span:first-child');
+    if (currentSlide === TOTAL_SLIDES - 1) {
+      hint.textContent = 'Open the catalog';
+    } else {
+      hint.textContent = 'Tap anywhere to continue';
+    }
+  }
+
+  function exitIntro() {
+    if (!introActive) return;
+    introActive = false;
+    const intro = document.getElementById('intro');
+    const nav = document.getElementById('intro-nav');
+    const hint = document.querySelector('.intro-hint');
+    const skip = document.querySelector('.intro-skip');
+
+    intro.classList.add('exit');
+    nav.style.opacity = '0';
+    hint.style.opacity = '0';
+    skip.style.opacity = '0';
+
+    setTimeout(() => {
+      intro.style.display = 'none';
+      document.getElementById('catalog').classList.add('visible');
+      document.body.style.background = 'var(--bg)';
+      window.scrollTo(0, 0);
+    }, 700);
+  }
+
+  // Click anywhere on intro to advance
+  document.getElementById('intro').addEventListener('click', function(e) {
+    if (e.target.closest('.intro-dot') || e.target.closest('.intro-skip') || e.target.closest('.slide-cta')) return;
+    nextSlide();
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    if (!introActive) return;
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') nextSlide();
+    if (e.key === 'ArrowLeft' && currentSlide > 0) goToSlide(currentSlide - 1);
+    if (e.key === 'Escape') exitIntro();
+  });
 </script>
+</div>
 </body>
 </html>
