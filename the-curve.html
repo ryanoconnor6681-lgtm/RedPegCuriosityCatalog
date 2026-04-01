@@ -427,6 +427,61 @@
 
   .metr-source a { color: var(--accent); text-decoration: none; }
 
+  /* EXPAND CARDS */
+  .expand-card {
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .expand-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 28px;
+    cursor: pointer;
+    background: var(--surface);
+    transition: background 0.15s;
+    gap: 16px;
+  }
+
+  .expand-header:hover { background: var(--surface2); }
+  .expand-card.open .expand-header { border-bottom: 1px solid var(--border); }
+
+  .expand-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.03em;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .expand-sub {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 300;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .expand-arrow {
+    font-size: 14px;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+
+  .expand-card.open .expand-arrow { transform: rotate(180deg); color: var(--accent); }
+
+  .expand-body {
+    display: none;
+    padding: 28px;
+    background: var(--surface);
+  }
+
+  .expand-card.open .expand-body { display: block; }
+
   /* DOUBLING STAT */
   .doubling-grid {
     display: grid;
@@ -721,6 +776,34 @@
     </div>
   </div>
 
+  <!-- PENNY CHART -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:28px;margin-bottom:32px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;">The exponential curve — plotted</div>
+        <div style="font-size:13px;color:var(--mid);font-weight:300;">Each bar is one day. Toggle to see why the first 20 days look flat until they don't.</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="setScale('linear')" id="btn-linear" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;padding:6px 14px;border-radius:2px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:white;transition:all 0.15s;">Linear</button>
+        <button onclick="setScale('log')" id="btn-log" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;padding:6px 14px;border-radius:2px;cursor:pointer;border:1px solid #333;background:transparent;color:#555;transition:all 0.15s;">Log scale</button>
+      </div>
+    </div>
+    <div style="position:relative;height:260px;">
+      <canvas id="pennyChart"></canvas>
+    </div>
+    <div style="display:flex;gap:24px;margin-top:14px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;">
+        <span style="width:10px;height:10px;border-radius:1px;background:#1e2a1e;display:inline-block;"></span>Days 1–10: max $5
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;">
+        <span style="width:10px;height:10px;border-radius:1px;background:#3d2200;display:inline-block;"></span>Days 11–20: max $5,242
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#FF3D00;font-family:'DM Mono',monospace;">
+        <span style="width:10px;height:10px;border-radius:1px;background:#FF3D00;display:inline-block;"></span>Days 21–30: $5.4 million
+      </div>
+    </div>
+  </div>
+
   <div class="question-block">
     <h2>Are we on <span class="dim">day 10</span> of AI<br>or <span class="red">day 20?</span></h2>
     <p>The first 10 days of the penny = $5. Useful, but not life-changing. The last 10 days = $5 million. That's the question right now. Which phase of the curve are we in? Click to see what the data suggests.</p>
@@ -737,6 +820,29 @@
       The evidence points here. The METR research shows AI task capability has been doubling every 4–7 months since 2019. Two years ago, AI could complete a 2-minute task reliably. Today it's completing 5–7 hour tasks. A year from now, at this rate: a full work week of autonomous work. The last 10 days on the penny start now — and most people are still thinking about day 10.
     </div>
   </div>
+
+  <!-- ASSUMPTION VS REALITY -->
+  <div style="background:#0a0f0a;border:1px solid #1a2a1a;border-radius:3px;padding:36px;margin-bottom:0;">
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#4a8a4a;margin-bottom:16px;">Based on Tim Urban · Wait But Why</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#3a5a3a;letter-spacing:0.02em;margin-bottom:10px;">The assumption</div>
+        <div style="font-size:13px;color:#3a5a3a;line-height:1.7;font-weight:300;">Progress feels linear. Each year is a little better than the last. AI was at "smart high schooler" a few years ago. Maybe it'll be at "college grad" by 2030. We have time.</div>
+        <div style="margin-top:16px;padding:12px 16px;background:#0d1a0d;border:1px solid #1a2a1a;border-radius:2px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:#2a4a2a;margin-bottom:6px;">Where this puts you</div>
+          <div style="font-size:13px;color:#3a6a3a;font-weight:300;line-height:1.5;">Disappointed when it doesn't quite match expectations. Use it occasionally. Think of it as a smart autocomplete.</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);letter-spacing:0.02em;margin-bottom:10px;">The reality</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.7;font-weight:300;">Progress is exponential. 2022 AI couldn't reliably finish a 30-second task. Today's AI handles 5–7 hour projects. The curve is already vertical — most people just can't see it yet because they're still using AI like it's 2022.</div>
+        <div style="margin-top:16px;padding:12px 16px;background:#1a0800;border:1px solid #2a1500;border-radius:2px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:#c44a00;margin-bottom:6px;">Where this puts you</div>
+          <div style="font-size:13px;color:#ccc;font-weight:300;line-height:1.5;">Surprised — then permanently changed. Use it for everything. Start wondering how you ever worked without it.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- SECTION 2: THE METR DATA -->
@@ -744,6 +850,48 @@
   <div class="section-label">The research · METR · 2025</div>
   <div class="section-headline">The new<br>Moore's Law.</div>
   <div class="section-body">METR (Model Evaluation & Threat Research) tested 13 frontier AI models from 2019 to 2025 on hundreds of real tasks ranging from 30 seconds to 8+ hours of human work. The finding: <strong>the complexity of task AI can complete autonomously doubles every 4–7 months.</strong> No signs of slowing.</div>
+
+  <!-- METR CHART -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:28px;margin-bottom:32px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;">AI task time horizon — plotted</div>
+        <div style="font-size:13px;color:var(--mid);font-weight:300;">Length of task AI can complete autonomously at 50% reliability. Linear = see the wall. Log = see the trend.</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="setMetrScale('linear')" id="btn-mlinear" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;padding:6px 14px;border-radius:2px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:white;transition:all 0.15s;">Linear</button>
+        <button onclick="setMetrScale('log')" id="btn-mlog" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;padding:6px 14px;border-radius:2px;cursor:pointer;border:1px solid #333;background:transparent;color:#555;transition:all 0.15s;">Log scale</button>
+      </div>
+    </div>
+    <div style="position:relative;height:300px;">
+      <canvas id="metrChart"></canvas>
+    </div>
+    <div style="display:flex;gap:24px;margin-top:14px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;">
+        <span style="width:10px;height:3px;background:#5a8a5a;display:inline-block;"></span>Confirmed data
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;">
+        <span style="width:10px;height:3px;background:#FF3D00;display:inline-block;"></span>Projected (if trend holds)
+      </div>
+    </div>
+  </div>
+
+  <!-- BENCHMARK CALLOUT -->
+  <div style="background:#050a14;border:1px solid #0e1a2a;border-radius:3px;padding:28px;margin-bottom:32px;">
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#5588cc;margin-bottom:16px;">Our World in Data · AI vs Human benchmarks · Kiela et al. 2023</div>
+    <div style="font-size:15px;color:var(--text);font-weight:300;line-height:1.7;margin-bottom:20px;">Across 13 different capabilities — reading comprehension, image recognition, math, coding, language understanding — AI started each benchmark at <strong style="color:white">–100</strong> (far below human). The zero line = human performance. Every single capability has now crossed zero. AI surpasses human performance on all of them.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;">
+      <div style="padding:10px 12px;background:#0a1220;border:1px solid #0e1a2a;border-radius:2px;font-size:11px;color:#5588cc;font-family:'DM Mono',monospace;">Reading comprehension ✓</div>
+      <div style="padding:10px 12px;background:#0a1220;border:1px solid #0e1a2a;border-radius:2px;font-size:11px;color:#5588cc;font-family:'DM Mono',monospace;">Image recognition ✓</div>
+      <div style="padding:10px 12px;background:#0a1220;border:1px solid #0e1a2a;border-radius:2px;font-size:11px;color:#5588cc;font-family:'DM Mono',monospace;">Language understanding ✓</div>
+      <div style="padding:10px 12px;background:#0a1220;border:1px solid #0e1a2a;border-radius:2px;font-size:11px;color:#5588cc;font-family:'DM Mono',monospace;">Math problem-solving ✓</div>
+      <div style="padding:10px 12px;background:#0a1220;border:1px solid #0e1a2a;border-radius:2px;font-size:11px;color:#5588cc;font-family:'DM Mono',monospace;">Code generation ✓</div>
+      <div style="padding:10px 12px;background:#0a1220;border:1px solid #0e1a2a;border-radius:2px;font-size:11px;color:#5588cc;font-family:'DM Mono',monospace;">Speech recognition ✓</div>
+      <div style="padding:10px 12px;background:#0a1220;border:1px solid #0e1a2a;border-radius:2px;font-size:11px;color:#5588cc;font-family:'DM Mono',monospace;">General knowledge ✓</div>
+      <div style="padding:10px 12px;background:#0a1220;border:1px solid #0e1a2a;border-radius:2px;font-size:11px;color:#4466aa;font-family:'DM Mono',monospace;">Complex reasoning →</div>
+    </div>
+    <div style="margin-top:14px;font-size:12px;color:#3a5a8a;font-family:'DM Mono',monospace;">OurWorldInData.org/artificial-intelligence · CC BY</div>
+  </div>
 
   <div class="timeline">
     <div class="timeline-track"><div class="timeline-fill"></div></div>
@@ -794,9 +942,119 @@
   </div>
 
   <div class="metr-source">Source: METR — "Measuring AI Ability to Complete Long Tasks" (2025) · <a href="https://theaidigest.org/time-horizons" target="_blank" rel="noopener">theaidigest.org/time-horizons</a></div>
+
+  <!-- LAKE ANALOGY -->
+  <div style="margin-top:48px;padding:36px;background:#080808;border:1px solid #1a1a1a;border-radius:3px;">
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;">The assumption problem</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(24px,3.5vw,40px);color:var(--text);line-height:1;margin-bottom:18px;">You wade into a lake. The first 10 feet is gradual.</div>
+    <div style="font-size:15px;color:var(--mid);line-height:1.8;max-width:680px;font-weight:300;">
+      You wouldn't assume the next 4 steps are the same — especially if you know there's a drop-off ahead. But that's exactly what most people do with AI. They see the first 10 days of the penny (gradual, unimpressive) and assume the next 10 will look the same. They look at past growth and extrapolate forward in a straight line.<br><br>
+      <strong style="color:#ccc;">Exponential growth doesn't extrapolate linearly. The curve gets steeper every period — not flatter.</strong> The past growth is actually the <em>slowest</em> this technology will ever be. What looks "fast" right now is the floor, not the ceiling.
+    </div>
+    <div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:600px;">
+      <div style="padding:16px;background:#111;border:1px solid #1e1e1e;border-radius:2px;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:#444;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;">What you see</div>
+        <div style="font-size:13px;color:#555;line-height:1.5;">Past growth. Impressive but gradual. "I can handle this pace."</div>
+      </div>
+      <div style="padding:16px;background:#1a0800;border:1px solid #2a1500;border-radius:2px;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:#c44a00;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;">What's coming</div>
+        <div style="font-size:13px;color:#ccc;line-height:1.5;">The same doubling rate applied to a much larger base number. The drop-off.</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- SECTION 3: CONTEXT INFERENCE -->
+<!-- EXPANDABLE CHARTS SECTION -->
+<div class="section">
+  <div class="section-label">Dig deeper · Supporting research</div>
+  <div class="section-headline">The charts<br>behind the curve.</div>
+  <div class="section-body">Four visualizations — each showing the same exponential story from a different angle. Click any to expand.</div>
+
+  <!-- CHART 1: ASSUMPTION VS REALITY -->
+  <div class="expand-card" id="exp-1">
+    <div class="expand-header" onclick="toggleExpand('exp-1')">
+      <div>
+        <div class="expand-title">Assumption vs. Reality</div>
+        <div class="expand-sub">Based on Tim Urban · Wait But Why — What we expect vs. what the data shows</div>
+      </div>
+      <div class="expand-arrow" id="arr-exp-1">▼</div>
+    </div>
+    <div class="expand-body" id="body-exp-1">
+      <div style="position:relative;height:320px;margin-bottom:16px;">
+        <canvas id="assumeChart"></canvas>
+      </div>
+      <div style="display:flex;gap:20px;font-size:11px;font-family:'DM Mono',monospace;flex-wrap:wrap;">
+        <span style="display:flex;align-items:center;gap:6px;"><span style="width:24px;height:3px;background:#3a5aaa;display:inline-block;"></span>Assumption (linear)</span>
+        <span style="display:flex;align-items:center;gap:6px;"><span style="width:24px;height:3px;background:#FF3D00;display:inline-block;"></span>Reality (exponential)</span>
+        <span style="font-size:10px;color:#444;margin-left:auto;">The gap is where the surprise lives.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHART 2: AI TEST SCORES -->
+  <div class="expand-card" id="exp-2">
+    <div class="expand-header" onclick="toggleExpand('exp-2')">
+      <div>
+        <div class="expand-title">AI vs. Human Performance — 13 Benchmarks</div>
+        <div class="expand-sub">Our World in Data · Kiela et al. 2023 — Zero line = human performance. Every capability has crossed it.</div>
+      </div>
+      <div class="expand-arrow" id="arr-exp-2">▼</div>
+    </div>
+    <div class="expand-body" id="body-exp-2">
+      <div style="position:relative;height:340px;margin-bottom:16px;">
+        <canvas id="benchChart"></canvas>
+      </div>
+      <div style="font-size:12px;color:#444;font-family:'DM Mono',monospace;">OurWorldInData.org/artificial-intelligence · CC BY · Kiela et al. 2023</div>
+    </div>
+  </div>
+
+  <!-- CHART 3: INTELLIGENCE SCALE -->
+  <div class="expand-card" id="exp-3">
+    <div class="expand-header" onclick="toggleExpand('exp-3')">
+      <div>
+        <div class="expand-title">Intelligence Explosion — Capability Projection</div>
+        <div class="expand-sub">Based on Leopold Aschenbrenner · Situational Awareness — Normalized to GPT-4 as baseline</div>
+      </div>
+      <div class="expand-arrow" id="arr-exp-3">▼</div>
+    </div>
+    <div class="expand-body" id="body-exp-3">
+      <div style="position:relative;height:360px;margin-bottom:16px;">
+        <canvas id="intChart"></canvas>
+      </div>
+      <div style="font-size:12px;color:#444;font-family:'DM Mono',monospace;">Note: Log scale. GPT-4 = 1.0 baseline. Projection illustrative, not predictive. Based on Aschenbrenner, Situational Awareness (2024).</div>
+    </div>
+  </div>
+
+  <!-- CHART 4: PENNY VS METR SIDE BY SIDE -->
+  <div class="expand-card" id="exp-4">
+    <div class="expand-header" onclick="toggleExpand('exp-4')">
+      <div>
+        <div class="expand-title">The Penny and AI — Same Curve, Different Numbers</div>
+        <div class="expand-sub">Both plotted on linear scale so you can see the near-vertical wall. This is what exponential actually looks like.</div>
+      </div>
+      <div class="expand-arrow" id="arr-exp-4">▼</div>
+    </div>
+    <div class="expand-body" id="body-exp-4">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:12px;">Penny · 30 days · Linear scale</div>
+          <div style="position:relative;height:240px;">
+            <canvas id="pennyLinear2"></canvas>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:12px;">AI task hours · 2019–2027 · Linear scale</div>
+          <div style="position:relative;height:240px;">
+            <canvas id="metrLinear2"></canvas>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:16px 20px;background:#1a0800;border-left:3px solid var(--accent);font-size:13px;color:#ccc;line-height:1.6;">
+        On linear scale, both look identical: flat for most of the timeline, then nearly vertical at the end. <strong style="color:white">This is the shape of the technology you're using right now.</strong> The flat part is history. The vertical part is the next 18 months.
+      </div>
+    </div>
+  </div>
+</div>
 <div class="section">
   <div class="section-label">What this means in practice</div>
   <div class="section-headline">It figures<br>it out.</div>
@@ -856,55 +1114,280 @@
   </a>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-  const pennyData = Array.from({length:30}, (_,i) => {
-    const v = 0.01 * Math.pow(2, i);
-    if (v >= 1e6) return '$' + (v/1e6).toFixed(1) + 'M';
-    if (v >= 1e3) return '$' + Math.round(v/1e3) + 'K';
-    if (v >= 1) return '$' + v.toFixed(2);
-    return '$0.0' + Math.round(v*100);
-  });
+  const TT = {
+    backgroundColor:'#0d0d0d', titleColor:'#888', bodyColor:'#FF3D00',
+    borderColor:'#333', borderWidth:1, padding:10
+  };
+  const GRID = '#151515';
+  const FMT_DOLLAR = v => v >= 1e6 ? '$'+(v/1e6).toFixed(2)+'M' : v >= 1e3 ? '$'+Math.round(v/1e3).toLocaleString()+'K' : '$'+v.toFixed(2);
+  const FMT_TIME = v => { if(!v) return ''; if(v>=10080) return '~'+(v/10080).toFixed(1)+'wk'; if(v>=1440) return '~'+Math.round(v/1440)+'d'; if(v>=60) return '~'+Math.round(v/60)+'h'; return '~'+Math.round(v)+'m'; };
 
+  // ---- PENNY ROW DISPLAY ----
+  const pennyLabels = Array.from({length:30}, (_,i) => {
+    const v = 0.01 * Math.pow(2, i);
+    return v >= 1e6 ? '$'+(v/1e6).toFixed(1)+'M' : v >= 1e3 ? '$'+Math.round(v/1e3)+'K' : v >= 1 ? '$'+v.toFixed(2) : '$0.0'+Math.round(v*100);
+  });
   let currentDay = 0;
 
   function renderRows() {
-    const container = document.getElementById('penny-rows');
-    container.innerHTML = '';
-    for (let i = 0; i < 30; i++) {
-      const div = document.createElement('div');
-      div.className = 'penny-row' + (i === currentDay - 1 ? ' active' : i < currentDay - 1 ? ' past' : '');
-      div.innerHTML = `<div class="penny-row-day">Day ${i+1}</div><div class="penny-row-val">${i < currentDay ? pennyData[i] : '—'}</div>`;
-      container.appendChild(div);
+    const c = document.getElementById('penny-rows');
+    c.innerHTML = '';
+    for (let i=0;i<30;i++) {
+      const d = document.createElement('div');
+      d.className = 'penny-row'+(i===currentDay-1?' active':i<currentDay-1?' past':'');
+      d.innerHTML = `<div class="penny-row-day">Day ${i+1}</div><div class="penny-row-val">${i<currentDay?pennyLabels[i]:'—'}</div>`;
+      c.appendChild(d);
     }
-    const v = currentDay === 0 ? 0.01 : 0.01 * Math.pow(2, currentDay - 1);
-    let display;
-    if (v >= 1e6) display = '$' + (v/1e6).toFixed(2) + 'M';
-    else if (v >= 1e3) display = '$' + v.toLocaleString('en-US', {maximumFractionDigits:0});
-    else display = '$' + v.toFixed(2);
-    document.getElementById('penny-display').textContent = display;
+    const v = 0.01 * Math.pow(2, Math.max(0, currentDay-1));
+    document.getElementById('penny-display').textContent = FMT_DOLLAR(v);
   }
-
   function advancePenny() {
-    if (currentDay < 30) { currentDay++; renderRows(); }
-    if (currentDay === 30) {
-      document.getElementById('penny-next').textContent = 'Done';
-      document.getElementById('penny-next').disabled = true;
-    }
+    if (currentDay<30) { currentDay++; renderRows(); }
+    if (currentDay===30) { document.getElementById('penny-next').textContent='Done'; document.getElementById('penny-next').disabled=true; }
   }
-
   function resetPenny() {
-    currentDay = 0;
-    document.getElementById('penny-next').textContent = 'Double it';
-    document.getElementById('penny-next').disabled = false;
+    currentDay=0;
+    document.getElementById('penny-next').textContent='Double it';
+    document.getElementById('penny-next').disabled=false;
     renderRows();
   }
+  function showDay(d) {
+    document.querySelectorAll('.day-reveal').forEach(el=>el.classList.remove('show'));
+    document.getElementById('reveal-'+d).classList.add('show');
+  }
+  renderRows();
 
-  function showDay(day) {
-    document.querySelectorAll('.day-reveal').forEach(el => el.classList.remove('show'));
-    document.getElementById('reveal-' + day).classList.add('show');
+  // ---- PENNY MAIN CHART (linear by default — shows near-vertical wall) ----
+  const pennyVals = Array.from({length:30},(_,i) => 0.01*Math.pow(2,i));
+  const pColors = pennyVals.map((_,i) => i<10?'rgba(40,80,40,0.7)':i<20?'rgba(100,50,0,0.7)':'rgba(255,61,0,0.9)');
+
+  let pennyChart = new Chart(document.getElementById('pennyChart'), {
+    type:'bar',
+    data:{
+      labels:Array.from({length:30},(_,i)=>'D'+(i+1)),
+      datasets:[{data:pennyVals,backgroundColor:pColors,borderWidth:0,borderRadius:1}]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{...TT, callbacks:{
+        title:c=>'Day '+(c[0].dataIndex+1),
+        label:c=>' '+FMT_DOLLAR(c.raw)
+      }}},
+      scales:{
+        x:{ticks:{color:'#333',font:{size:8,family:"'DM Mono',monospace"},maxRotation:0},grid:{color:GRID}},
+        y:{type:'linear',ticks:{color:'#555',font:{size:10},callback:FMT_DOLLAR},grid:{color:GRID}}
+      }
+    }
+  });
+
+  let isLog=false;
+  function setScale(t) {
+    isLog=t==='log';
+    pennyChart.options.scales.y.type=isLog?'logarithmic':'linear';
+    pennyChart.update();
+    ['linear','log'].forEach(s=>{
+      const b=document.getElementById('btn-'+s);
+      const on=s===t;
+      b.style.background=on?'#FF3D00':'transparent';
+      b.style.borderColor=on?'#FF3D00':'#333';
+      b.style.color=on?'white':'#555';
+    });
   }
 
-  renderRows();
+  // ---- METR MAIN CHART (linear by default) ----
+  const metrLabels=['2019','GPT-2','GPT-3\n2020','GPT-3.5\n2022','GPT-4\n2023','Sonnet 3.5\n2024','o1\n2024','Sonnet 3.7\n2025','Now\n2026','Late 2026','2027'];
+  const metrConfirmed=[0.3,0.3,0.4,0.8,5,15,40,60,360,null,null];
+  const metrProjected=[null,null,null,null,null,null,null,null,360,840,10080];
+
+  let metrChart = new Chart(document.getElementById('metrChart'), {
+    type:'line',
+    data:{
+      labels:metrLabels,
+      datasets:[
+        {label:'Confirmed',data:metrConfirmed,borderColor:'#5a8a5a',backgroundColor:'rgba(90,138,90,0.06)',borderWidth:2.5,pointRadius:[3,3,3,4,5,5,5,5,8,0,0],pointBackgroundColor:'#5a8a5a',tension:0.3,fill:true},
+        {label:'Projected',data:metrProjected,borderColor:'#FF3D00',backgroundColor:'rgba(255,61,0,0.04)',borderWidth:2,borderDash:[6,4],pointRadius:[0,0,0,0,0,0,0,0,0,6,6],pointBackgroundColor:'#FF3D00',tension:0.3,fill:true}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{...TT,bodyColor:'#ccc',callbacks:{
+        label:c=>' '+FMT_TIME(c.raw)+' '+(c.datasetIndex===1?'(projected)':'')
+      }}},
+      scales:{
+        x:{ticks:{color:'#444',font:{size:9},maxRotation:30},grid:{color:GRID}},
+        y:{type:'linear',ticks:{color:'#555',font:{size:10},callback:FMT_TIME},grid:{color:GRID}}
+      }
+    }
+  });
+
+  let metrLog=false;
+  function setMetrScale(t) {
+    metrLog=t==='log';
+    metrChart.options.scales.y.type=metrLog?'logarithmic':'linear';
+    metrChart.update();
+    ['mlinear','mlog'].forEach(s=>{
+      const b=document.getElementById('btn-'+s);
+      const key=s==='mlinear'?'linear':'log';
+      const on=key===t;
+      b.style.background=on?'#FF3D00':'transparent';
+      b.style.borderColor=on?'#FF3D00':'#333';
+      b.style.color=on?'white':'#555';
+    });
+  }
+
+  // ---- EXPAND CARDS ----
+  function toggleExpand(id) {
+    const card=document.getElementById(id);
+    const wasOpen=card.classList.contains('open');
+    card.classList.toggle('open');
+    if (!wasOpen) initChart(id);
+  }
+
+  const chartInited={};
+  function initChart(id) {
+    if (chartInited[id]) return;
+    chartInited[id]=true;
+
+    if (id==='exp-1') {
+      // ASSUMPTION VS REALITY
+      const yrs=Array.from({length:13},(_,i)=>2018+i);
+      const assume=yrs.map((_,i)=>i*0.4);
+      const reality=yrs.map((_,i)=>0.01*Math.pow(1.85,i));
+      new Chart(document.getElementById('assumeChart'),{
+        type:'line',
+        data:{labels:yrs,datasets:[
+          {label:'Assumption',data:assume,borderColor:'#3a5aaa',backgroundColor:'rgba(58,90,170,0.05)',borderWidth:2,pointRadius:0,tension:0.1,fill:true},
+          {label:'Reality',data:reality,borderColor:'#FF3D00',backgroundColor:'rgba(255,61,0,0.06)',borderWidth:2.5,pointRadius:0,tension:0.35,fill:true}
+        ]},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:false},tooltip:{...TT,bodyColor:'#ccc'}},
+          scales:{
+            x:{ticks:{color:'#444',font:{size:10}},grid:{color:GRID}},
+            y:{ticks:{color:'#555',callback:()=>''},grid:{color:GRID},title:{display:true,text:'Capability',color:'#444',font:{size:11}}}
+          }
+        }
+      });
+    }
+
+    if (id==='exp-2') {
+      // AI BENCHMARK SCORES
+      const benchYears=[1998,2000,2003,2006,2010,2012,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024];
+      const caps={
+        'Reading comprehension':[null,null,null,null,null,null,-30,-15,0,5,8,10,null,null,null,null],
+        'Image recognition':[null,null,null,null,-65,-40,-10,0,5,8,12,null,null,null,null,null],
+        'Language understanding':[null,null,null,null,null,null,null,-20,-5,0,5,8,null,null,null,null],
+        'Math problem-solving':[null,null,null,null,null,null,null,null,-80,-50,-20,0,5,null,null,null],
+        'Code generation':[null,null,null,null,null,null,null,null,null,-90,-60,-30,0,5,null,null],
+        'Complex reasoning':[null,null,null,null,null,null,null,null,null,null,-100,-80,-60,-40,-20,0]
+      };
+      const colors=['#5a8a5a','#5588cc','#cc8833','#cc4444','#9966cc','#FF3D00'];
+      new Chart(document.getElementById('benchChart'),{
+        type:'line',
+        data:{
+          labels:benchYears,
+          datasets:Object.entries(caps).map(([k,v],i)=>({
+            label:k,data:v,borderColor:colors[i],borderWidth:2,
+            pointRadius:v.map(x=>x!==null?4:0),
+            pointBackgroundColor:colors[i],
+            tension:0.2,spanGaps:false
+          }))
+        },
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{display:false},
+            tooltip:{...TT,bodyColor:'#ccc',callbacks:{label:c=>` ${c.dataset.label}: ${c.raw !== null ? c.raw : '—'}`}}
+          },
+          scales:{
+            x:{ticks:{color:'#444',font:{size:9}},grid:{color:GRID}},
+            y:{
+              min:-105,max:25,
+              ticks:{color:'#555',font:{size:10}},
+              grid:{
+                color:ctx=>ctx.tick.value===0?'rgba(255,255,255,0.25)':GRID,
+                lineWidth:ctx=>ctx.tick.value===0?2:1
+              },
+              title:{display:true,text:'← Below human    Above human →',color:'#555',font:{size:10}}
+            }
+          }
+        }
+      });
+      // Legend
+      const leg=document.createElement('div');
+      leg.style.cssText='display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;';
+      Object.keys(caps).forEach((k,i)=>{
+        const s=document.createElement('span');
+        s.style.cssText='display:flex;align-items:center;gap:5px;font-size:10px;color:#666;font-family:monospace;';
+        s.innerHTML=`<span style="width:12px;height:3px;background:${colors[i]};display:inline-block;border-radius:1px;"></span>${k}`;
+        leg.appendChild(s);
+      });
+      document.getElementById('benchChart').parentNode.appendChild(leg);
+    }
+
+    if (id==='exp-3') {
+      // INTELLIGENCE EXPLOSION (log scale)
+      const intYears=Array.from({length:13},(_,i)=>2018+i);
+      const confirmed=  [0.001,0.003,0.01,0.05,0.2,0.5,1,null,null,null,null,null,null];
+      const projected=  [null,null,null,null,null,null,1,3,15,100,1e4,1e6,null];
+      const upperBand=  [null,null,null,null,null,null,1,8,80,2000,5e5,3e8,null];
+      new Chart(document.getElementById('intChart'),{
+        type:'line',
+        data:{labels:intYears,datasets:[
+          {label:'Confirmed capability',data:confirmed,borderColor:'#5588cc',backgroundColor:'rgba(85,136,204,0.07)',borderWidth:2.5,pointRadius:confirmed.map(x=>x?4:0),pointBackgroundColor:'#5588cc',tension:0.2,fill:true},
+          {label:'Projected (mid)',data:projected,borderColor:'#FF3D00',backgroundColor:'rgba(255,61,0,0.04)',borderWidth:2,borderDash:[6,4],pointRadius:0,tension:0.3,fill:false},
+          {label:'Upper scenario',data:upperBand,borderColor:'rgba(255,100,0,0.25)',backgroundColor:'rgba(255,61,0,0.03)',borderWidth:1,borderDash:[3,6],pointRadius:0,tension:0.3,fill:false}
+        ]},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:false},tooltip:{...TT,bodyColor:'#ccc'}},
+          scales:{
+            x:{ticks:{color:'#444',font:{size:10}},grid:{color:GRID}},
+            y:{
+              type:'logarithmic',
+              ticks:{color:'#555',font:{size:10},callback:v=>{
+                const map={0.001:'GPT-2',0.01:'GPT-3',0.1:'GPT-3.5',1:'GPT-4',100:'Smart researcher',10000:'Top expert',1000000:'Superintelligence?'};
+                return map[v]||'';
+              }},
+              grid:{color:GRID}
+            }
+          }
+        }
+      });
+    }
+
+    if (id==='exp-4') {
+      // PENNY LINEAR
+      const pv=Array.from({length:30},(_,i)=>0.01*Math.pow(2,i));
+      new Chart(document.getElementById('pennyLinear2'),{
+        type:'bar',
+        data:{labels:Array.from({length:30},(_,i)=>'D'+(i+1)),datasets:[{
+          data:pv,backgroundColor:pv.map((_,i)=>i<10?'rgba(40,80,40,0.6)':i<20?'rgba(100,50,0,0.6)':'rgba(255,61,0,0.9)'),borderWidth:0,borderRadius:1
+        }]},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:false},tooltip:{...TT,callbacks:{title:c=>'Day '+(c[0].dataIndex+1),label:c=>' '+FMT_DOLLAR(c.raw)}}},
+          scales:{
+            x:{ticks:{color:'#333',font:{size:7},maxRotation:0},grid:{color:GRID}},
+            y:{type:'linear',ticks:{color:'#555',font:{size:9},callback:FMT_DOLLAR},grid:{color:GRID}}
+          }
+        }
+      });
+      // METR LINEAR
+      const ml=['2019','2022','2023','2024 Q1','2024 Q3','Early 2025','Now 2026','Late 2026','2027'];
+      const mc=[0.3,0.8,5,15,40,60,360,840,10080];
+      const mcol=mc.map((_,i)=>i<6?'rgba(90,138,90,0.8)':i===6?'rgba(255,100,0,0.9)':'rgba(255,61,0,0.95)');
+      new Chart(document.getElementById('metrLinear2'),{
+        type:'bar',
+        data:{labels:ml,datasets:[{data:mc,backgroundColor:mcol,borderWidth:0,borderRadius:2}]},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:false},tooltip:{...TT,bodyColor:'#ccc',callbacks:{label:c=>' '+FMT_TIME(c.raw)}}},
+          scales:{
+            x:{ticks:{color:'#444',font:{size:9},maxRotation:30},grid:{color:GRID}},
+            y:{type:'linear',ticks:{color:'#555',font:{size:9},callback:FMT_TIME},grid:{color:GRID}}
+          }
+        }
+      });
+    }
+  }
 </script>
 
 </body>
