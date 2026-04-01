@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Curve — RedPeg × AI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #161616;
+    --border: #1e1e1e;
+    --accent: #FF3D00;
+    --text: #f0f0f0;
+    --muted: #555555;
+    --mid: #888888;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  .nav {
+    padding: 20px 48px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .nav-back {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-back:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    padding: 96px 48px 72px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 140px);
+    line-height: 0.88;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    margin-bottom: 36px;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--mid);
+    max-width: 620px;
+    font-weight: 300;
+  }
+
+  /* SECTIONS */
+  .section {
+    padding: 80px 48px;
+    border-top: 1px solid var(--border);
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .section-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 0.93;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+
+  .section-body {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--mid);
+    font-weight: 300;
+    max-width: 680px;
+    margin-bottom: 48px;
+  }
+
+  .section-body strong { color: #ccc; font-weight: 400; }
+
+  /* PENNY TABLE */
+  .penny-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-bottom: 40px;
+  }
+
+  .penny-phase {
+    padding: 28px 24px;
+    border-radius: 2px;
+    position: relative;
+  }
+
+  .penny-phase.slow { background: #111; border: 1px solid #1a1a1a; }
+  .penny-phase.mid  { background: #130800; border: 1px solid #220d00; }
+  .penny-phase.fast { background: #1f0500; border: 1px solid #3a0800; }
+
+  .penny-phase-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .penny-phase.slow .penny-phase-label { color: var(--muted); }
+  .penny-phase.mid  .penny-phase-label { color: #c44a00; }
+  .penny-phase.fast .penny-phase-label { color: var(--accent); }
+
+  .penny-days {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .penny-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1;
+    letter-spacing: 0.01em;
+  }
+
+  .penny-phase.slow .penny-amount { color: #444; }
+  .penny-phase.mid  .penny-amount { color: #c44a00; }
+  .penny-phase.fast .penny-amount { color: var(--accent); }
+
+  .penny-sub {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  /* INTERACTIVE PENNY */
+  .penny-interactive {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 32px;
+    margin-bottom: 40px;
+  }
+
+  .penny-rows {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    margin-bottom: 24px;
+  }
+
+  .penny-row {
+    padding: 10px 8px;
+    border-radius: 2px;
+    text-align: center;
+    background: #141414;
+    transition: background 0.3s, transform 0.2s;
+    cursor: default;
+  }
+
+  .penny-row.active { background: var(--accent); transform: scale(1.04); }
+  .penny-row.past   { background: #1a0800; }
+
+  .penny-row-day {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .penny-row.active .penny-row-day { color: rgba(255,255,255,0.7); }
+  .penny-row.past .penny-row-day   { color: #553322; }
+
+  .penny-row-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .penny-row.active .penny-row-val { color: white; }
+  .penny-row.past .penny-row-val   { color: #c44a00; }
+
+  .penny-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .penny-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .penny-btn:hover { background: #e03500; }
+  .penny-btn.secondary { background: transparent; border: 1px solid var(--border); color: var(--mid); }
+  .penny-btn.secondary:hover { border-color: var(--accent); color: var(--text); }
+
+  .penny-total {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+  }
+
+  .penny-total-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* QUESTION BLOCK */
+  .question-block {
+    background: #0f0800;
+    border: 1px solid #2a1500;
+    border-radius: 3px;
+    padding: 40px;
+    margin-bottom: 24px;
+  }
+
+  .question-block h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    margin-bottom: 16px;
+  }
+
+  .question-block h2 .dim  { color: #444; }
+  .question-block h2 .red  { color: var(--accent); }
+
+  .question-block p {
+    font-size: 15px;
+    color: var(--mid);
+    line-height: 1.7;
+    font-weight: 300;
+    max-width: 580px;
+  }
+
+  .day-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .day-btn {
+    padding: 12px 28px;
+    border-radius: 2px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    border: 1px solid;
+    transition: all 0.15s;
+  }
+
+  .day-btn.d10 { background: transparent; border-color: #333; color: #555; }
+  .day-btn.d10:hover { border-color: #666; color: #999; }
+  .day-btn.d20 { background: var(--accent); border-color: var(--accent); color: white; }
+  .day-btn.d20:hover { background: #e03500; }
+
+  .day-reveal {
+    display: none;
+    margin-top: 20px;
+    padding: 20px 24px;
+    border-radius: 2px;
+    font-size: 14px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .day-reveal.show { display: block; }
+  .day-reveal.d10 { background: #111; border: 1px solid #222; color: var(--mid); }
+  .day-reveal.d20 { background: rgba(255,61,0,0.06); border: 1px solid rgba(255,61,0,0.2); color: #ccc; }
+
+  /* METR TIMELINE */
+  .timeline {
+    position: relative;
+    padding: 8px 0 0;
+    margin-bottom: 48px;
+  }
+
+  .timeline-track {
+    position: relative;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 0 0 0;
+  }
+
+  .timeline-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: var(--accent);
+    border-radius: 2px;
+    width: 100%;
+  }
+
+  .timeline-points {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    margin-top: 0;
+  }
+
+  .timeline-point {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 16px;
+    position: relative;
+  }
+
+  .timeline-point::before {
+    content: '';
+    position: absolute;
+    top: -14px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--muted);
+  }
+
+  .timeline-point.now::before { border-color: var(--accent); background: var(--accent); }
+  .timeline-point.future::before { border-color: #333; background: var(--bg); border-style: dashed; }
+
+  .tl-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .timeline-point.now .tl-year { color: var(--accent); }
+
+  .tl-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(18px, 2.5vw, 28px);
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .timeline-point.future .tl-value { color: #444; }
+
+  .tl-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.4;
+    font-weight: 300;
+  }
+
+  .timeline-point.now .tl-label { color: #888; }
+
+  .metr-source {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 32px;
+    letter-spacing: 0.1em;
+  }
+
+  .metr-source a { color: var(--accent); text-decoration: none; }
+
+  /* DOUBLING STAT */
+  .doubling-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 40px;
+  }
+
+  .doubling-card {
+    padding: 32px;
+    border-radius: 2px;
+  }
+
+  .doubling-card.a { background: var(--surface); border: 1px solid var(--border); }
+  .doubling-card.b { background: #0f0800; border: 1px solid #2a1500; }
+
+  .doubling-card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .doubling-card.b .doubling-card-label { color: #c44a00; }
+
+  .doubling-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .doubling-card.a .doubling-num { color: #444; }
+
+  .doubling-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* INFERENCE SECTION */
+  .inference-demo {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+
+  .inference-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .inference-header-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .inference-header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .inference-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .inference-col {
+    padding: 28px 24px;
+  }
+
+  .inference-col:first-child {
+    border-right: 1px solid var(--border);
+  }
+
+  .inference-col-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .inference-col:first-child .inference-col-label { color: var(--muted); }
+  .inference-col:last-child  .inference-col-label { color: var(--accent); }
+
+  .inference-email {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #555;
+    font-family: 'DM Mono', monospace;
+    border: 1px solid #1a1a1a;
+    background: #0d0d0d;
+    padding: 14px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+  }
+
+  .inference-email.new {
+    color: #ccc;
+    border-color: #222;
+    background: #111;
+  }
+
+  .inference-inferred {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .inferred-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255,61,0,0.05);
+    border: 1px solid rgba(255,61,0,0.12);
+    border-radius: 2px;
+  }
+
+  .inferred-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .inferred-text {
+    font-size: 12.5px;
+    color: #bbb;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .inferred-text strong { color: var(--text); font-weight: 400; }
+
+  .inference-note {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.5;
+    padding: 12px 0 0;
+  }
+
+  /* CLOSE CTA */
+  .close-section {
+    padding: 80px 48px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .close-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .close-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 7vw, 88px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+
+  .close-headline span { color: var(--accent); }
+
+  .close-sub {
+    font-size: 16px;
+    color: var(--mid);
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto 36px;
+    line-height: 1.65;
+  }
+
+  .close-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: white;
+    padding: 16px 36px;
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  .close-cta:hover { background: #e03500; }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    border-left: 3px solid var(--accent);
+    padding: 20px 28px;
+    background: rgba(255,61,0,0.04);
+    border-radius: 0 2px 2px 0;
+    margin-bottom: 40px;
+  }
+
+  .pull-quote p {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(18px, 2.5vw, 26px);
+    letter-spacing: 0.02em;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .pull-quote span { color: var(--accent); }
+
+  @media (max-width: 700px) {
+    .nav, .hero, .section { padding-left: 24px; padding-right: 24px; }
+    .penny-grid { grid-template-columns: 1fr; }
+    .penny-rows { grid-template-columns: repeat(3, 1fr); }
+    .doubling-grid { grid-template-columns: 1fr; }
+    .inference-body { grid-template-columns: 1fr; }
+    .inference-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+    .timeline-points { grid-template-columns: repeat(3, 1fr); }
+    .question-block { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-logo">RedPeg × AI</div>
+  <a class="nav-back" href="index.html">← Back to Catalog</a>
+</div>
+
+<div class="hero">
+  <div class="hero-label">The most important thing to understand about AI right now</div>
+  <h1>The<br><span>Curve.</span></h1>
+  <p class="hero-sub">AI isn't improving in a straight line. It's on an exponential curve. And here's the thing about exponential curves — they're boring until they're not. Then they change everything.</p>
+</div>
+
+<!-- SECTION 1: THE PENNY -->
+<div class="section">
+  <div class="section-label">Why humans don't get exponential growth</div>
+  <div class="section-headline">Start with<br>a penny.</div>
+  <div class="section-body">Double it every day for 30 days. Most people guess the answer is somewhere between a few hundred and a few thousand dollars. They're off by about <strong>five million dollars.</strong></div>
+
+  <div class="penny-grid">
+    <div class="penny-phase slow">
+      <div class="penny-phase-label">Days 1–10</div>
+      <div class="penny-days">Day 1 → Day 10</div>
+      <div class="penny-amount">$5.12</div>
+      <div class="penny-sub">Feels like nothing. This is the part where people give up on the idea that doubling matters.</div>
+    </div>
+    <div class="penny-phase mid">
+      <div class="penny-phase-label">Days 11–20</div>
+      <div class="penny-days">Day 11 → Day 20</div>
+      <div class="penny-amount">$5,242</div>
+      <div class="penny-sub">Starting to notice. Something is clearly happening, but it still doesn't feel like a big deal.</div>
+    </div>
+    <div class="penny-phase fast">
+      <div class="penny-phase-label">Days 21–30</div>
+      <div class="penny-days">Day 21 → Day 30</div>
+      <div class="penny-amount">$5.37M</div>
+      <div class="penny-sub">This is where the curve goes vertical. The last 10 days produce more than the previous 20 combined — by a million miles.</div>
+    </div>
+  </div>
+
+  <div class="penny-interactive">
+    <div class="penny-rows" id="penny-rows"></div>
+    <div class="penny-controls">
+      <button class="penny-btn" id="penny-next" onclick="advancePenny()">Double it</button>
+      <button class="penny-btn secondary" onclick="resetPenny()">Reset</button>
+      <div>
+        <div class="penny-total-label">Current total</div>
+        <div class="penny-total" id="penny-display">$0.01</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-block">
+    <h2>Are we on <span class="dim">day 10</span> of AI<br>or <span class="red">day 20?</span></h2>
+    <p>The first 10 days of the penny = $5. Useful, but not life-changing. The last 10 days = $5 million. That's the question right now. Which phase of the curve are we in? Click to see what the data suggests.</p>
+    <div class="day-buttons">
+      <button class="day-btn d10" onclick="showDay(10)">Day 10 — Early days</button>
+      <button class="day-btn d20" onclick="showDay(20)">Day 20 — Mid-curve</button>
+    </div>
+    <div class="day-reveal d10" id="reveal-10">
+      <strong style="color:#888">If we're on day 10...</strong><br><br>
+      AI is useful for simple tasks — drafting emails, basic summaries, one-off questions. The technology works but feels incremental. Most people can see the value but it doesn't feel urgent. There's plenty of time to learn it "later." This is where most people think we are right now.
+    </div>
+    <div class="day-reveal d20" id="reveal-20">
+      <strong style="color:#ccc">If we're on day 20...</strong><br><br>
+      The evidence points here. The METR research shows AI task capability has been doubling every 4–7 months since 2019. Two years ago, AI could complete a 2-minute task reliably. Today it's completing 5–7 hour tasks. A year from now, at this rate: a full work week of autonomous work. The last 10 days on the penny start now — and most people are still thinking about day 10.
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: THE METR DATA -->
+<div class="section">
+  <div class="section-label">The research · METR · 2025</div>
+  <div class="section-headline">The new<br>Moore's Law.</div>
+  <div class="section-body">METR (Model Evaluation & Threat Research) tested 13 frontier AI models from 2019 to 2025 on hundreds of real tasks ranging from 30 seconds to 8+ hours of human work. The finding: <strong>the complexity of task AI can complete autonomously doubles every 4–7 months.</strong> No signs of slowing.</div>
+
+  <div class="timeline">
+    <div class="timeline-track"><div class="timeline-fill"></div></div>
+    <div class="timeline-points">
+      <div class="timeline-point">
+        <div class="tl-year">2019</div>
+        <div class="tl-value">&lt;1 min</div>
+        <div class="tl-label">Simple lookups only</div>
+      </div>
+      <div class="timeline-point">
+        <div class="tl-year">Early 2024</div>
+        <div class="tl-value">30 min</div>
+        <div class="tl-label">Research, drafting, analysis</div>
+      </div>
+      <div class="timeline-point now">
+        <div class="tl-year">Now · 2026</div>
+        <div class="tl-value">5–7 hrs</div>
+        <div class="tl-label">Complex multi-step projects</div>
+      </div>
+      <div class="timeline-point future">
+        <div class="tl-year">Late 2026</div>
+        <div class="tl-value">~14 hrs</div>
+        <div class="tl-label">Multi-day tasks, projected</div>
+      </div>
+      <div class="timeline-point future">
+        <div class="tl-year">2027</div>
+        <div class="tl-value">Weeks</div>
+        <div class="tl-label">If trend holds</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doubling-grid">
+    <div class="doubling-card a">
+      <div class="doubling-card-label">Overall doubling rate · 2019–2025</div>
+      <div class="doubling-num">7 mo</div>
+      <div class="doubling-desc">Every 7 months, the length of task AI can complete autonomously at 50% reliability doubles. This was the baseline trend across the full 6-year period.</div>
+    </div>
+    <div class="doubling-card b">
+      <div class="doubling-card-label">Accelerated rate · 2024–2026</div>
+      <div class="doubling-num">4 mo</div>
+      <div class="doubling-desc">In the most recent period, the trend has accelerated to doubling every 4 months — likely due to the reasoning model paradigm shift. The curve is steepening.</div>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    <p>Two years ago, AI could handle a <span>2-minute task</span> reliably.<br>Today: <span>5–7 hours.</span> In 12 months: <span>a full work week.</span><br>This is the same penny. We just passed day 20.</p>
+  </div>
+
+  <div class="metr-source">Source: METR — "Measuring AI Ability to Complete Long Tasks" (2025) · <a href="https://theaidigest.org/time-horizons" target="_blank" rel="noopener">theaidigest.org/time-horizons</a></div>
+</div>
+
+<!-- SECTION 3: CONTEXT INFERENCE -->
+<div class="section">
+  <div class="section-label">What this means in practice</div>
+  <div class="section-headline">It figures<br>it out.</div>
+  <div class="section-body">As capability grows, so does inference. Claude doesn't just execute instructions — it reads context and adapts. You don't tell it your tone, your style, your client's expectations. <strong>It picks them up from what you give it.</strong> Here's a real example of what that looks like.</div>
+
+  <div class="inference-demo">
+    <div class="inference-header">
+      <div class="inference-header-dot"></div>
+      <div class="inference-header-label">Live example — what Claude infers without being told</div>
+    </div>
+    <div class="inference-body">
+      <div class="inference-col">
+        <div class="inference-col-label">What you give it</div>
+        <div class="inference-email">From: Ryan O'Connor<br>To: Sarah @ Nike<br><br>Hey Sarah — quick update on the activation. Team's locked in on the copper key concept, still working through the fabrication timeline. Will have full details by EOW. Let me know if you need anything before then.<br><br>— R</div>
+        <div class="inference-email new">New email from Sarah:<br><br>"Hi Ryan, any chance you could give me a rough budget range for the fabrication piece? Need to flag it internally before Friday."</div>
+        <p class="inference-note">All you say: "Draft a reply to Sarah's new email."</p>
+      </div>
+      <div class="inference-col">
+        <div class="inference-col-label">What Claude infers</div>
+        <div class="inference-inferred">
+          <div class="inferred-item">
+            <div class="inferred-dot"></div>
+            <div class="inferred-text"><strong>Tone:</strong> Casual but professional. First name basis. Short sentences. Signs off as "R" not full name.</div>
+          </div>
+          <div class="inferred-item">
+            <div class="inferred-dot"></div>
+            <div class="inferred-text"><strong>Relationship:</strong> Collaborative, established. Sarah is a client, not a stranger. Warm but efficient.</div>
+          </div>
+          <div class="inferred-item">
+            <div class="inferred-dot"></div>
+            <div class="inferred-text"><strong>Urgency:</strong> Friday deadline noted. Response should acknowledge the timeline without over-promising.</div>
+          </div>
+          <div class="inferred-item">
+            <div class="inferred-dot"></div>
+            <div class="inferred-text"><strong>Format:</strong> Short. No bullet points. No formal greeting. Matches Ryan's style.</div>
+          </div>
+          <div class="inferred-item">
+            <div class="inferred-dot"></div>
+            <div class="inferred-text"><strong>Context:</strong> Fabrication is still in progress. Reply should be honest about range without over-committing.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-body" style="margin-bottom:0">You never said any of that. Claude read the context and knew. This is inference — and as the capability curve steepens, it only gets more accurate, more nuanced, and more useful across more types of work.</div>
+</div>
+
+<!-- CLOSE -->
+<div class="close-section">
+  <div class="close-label">The only question that matters</div>
+  <div class="close-headline">Which side of<br>the <span>curve</span><br>are you on?</div>
+  <div class="close-sub">The people who start now aren't ahead because they're smarter or more technical. They're ahead because they started earlier on an exponential curve. That gap compounds.</div>
+  <a class="close-cta" href="index.html">
+    Find your entry point
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+  </a>
+</div>
+
+<script>
+  const pennyData = Array.from({length:30}, (_,i) => {
+    const v = 0.01 * Math.pow(2, i);
+    if (v >= 1e6) return '$' + (v/1e6).toFixed(1) + 'M';
+    if (v >= 1e3) return '$' + Math.round(v/1e3) + 'K';
+    if (v >= 1) return '$' + v.toFixed(2);
+    return '$0.0' + Math.round(v*100);
+  });
+
+  let currentDay = 0;
+
+  function renderRows() {
+    const container = document.getElementById('penny-rows');
+    container.innerHTML = '';
+    for (let i = 0; i < 30; i++) {
+      const div = document.createElement('div');
+      div.className = 'penny-row' + (i === currentDay - 1 ? ' active' : i < currentDay - 1 ? ' past' : '');
+      div.innerHTML = `<div class="penny-row-day">Day ${i+1}</div><div class="penny-row-val">${i < currentDay ? pennyData[i] : '—'}</div>`;
+      container.appendChild(div);
+    }
+    const v = currentDay === 0 ? 0.01 : 0.01 * Math.pow(2, currentDay - 1);
+    let display;
+    if (v >= 1e6) display = '$' + (v/1e6).toFixed(2) + 'M';
+    else if (v >= 1e3) display = '$' + v.toLocaleString('en-US', {maximumFractionDigits:0});
+    else display = '$' + v.toFixed(2);
+    document.getElementById('penny-display').textContent = display;
+  }
+
+  function advancePenny() {
+    if (currentDay < 30) { currentDay++; renderRows(); }
+    if (currentDay === 30) {
+      document.getElementById('penny-next').textContent = 'Done';
+      document.getElementById('penny-next').disabled = true;
+    }
+  }
+
+  function resetPenny() {
+    currentDay = 0;
+    document.getElementById('penny-next').textContent = 'Double it';
+    document.getElementById('penny-next').disabled = false;
+    renderRows();
+  }
+
+  function showDay(day) {
+    document.querySelectorAll('.day-reveal').forEach(el => el.classList.remove('show'));
+    document.getElementById('reveal-' + day).classList.add('show');
+  }
+
+  renderRows();
+</script>
+
+</body>
+</html>
