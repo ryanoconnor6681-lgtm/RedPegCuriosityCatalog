@@ -677,6 +677,170 @@
     border-radius: 1px;
   }
 
+  /* PROMPTING DIAGRAM SECTION */
+  .prompting-section {
+    background: var(--bg);
+    padding: 72px 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .prompting-inner { max-width: 960px; margin: 0 auto; }
+
+  .prompting-header { margin-bottom: 48px; }
+
+  .prompting-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .prompting-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(38px, 5vw, 64px);
+    line-height: 0.93;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  .prompting-headline span { color: var(--accent); }
+
+  .prompting-sub {
+    font-size: 15px;
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 580px;
+    line-height: 1.65;
+  }
+
+  .prompting-diagram {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    align-items: center;
+    margin-bottom: 48px;
+  }
+
+  .diagram-col { border-radius: 3px; padding: 28px; }
+  .diagram-col.wrong { background: var(--surface); border: 1px solid var(--border); }
+  .diagram-col.right { background: #0a0a0a; border: 1px solid #1e1e1e; }
+
+  .diagram-col-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .diagram-col.wrong .diagram-col-label { color: var(--muted); }
+  .diagram-col.right .diagram-col-label { color: var(--accent); }
+
+  .diagram-step {
+    font-size: 12px;
+    background: var(--tag-bg);
+    color: var(--muted);
+    padding: 8px 14px;
+    margin-bottom: 6px;
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+
+  .diagram-col-note {
+    margin-top: 14px;
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  .right-note { color: #666; }
+
+  .diagram-outcome {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: #FF3D00;
+    padding: 14px 16px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+  }
+
+  .diagram-outcome-icon { font-size: 18px; color: rgba(255,255,255,0.8); flex-shrink: 0; margin-top: 1px; }
+  .diagram-outcome-title { font-size: 13px; font-weight: 600; color: white; margin-bottom: 3px; }
+  .diagram-outcome-desc { font-size: 11px; color: rgba(255,255,255,0.75); line-height: 1.4; font-weight: 300; }
+
+  .diagram-vs {
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+  }
+
+  .prompting-examples { margin-bottom: 40px; }
+
+  .prompting-example-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .example-row {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .example-bad, .example-good { padding: 16px 18px; border-radius: 2px; }
+  .example-bad { background: var(--surface); border: 1px solid var(--border); }
+  .example-good { background: rgba(255,61,0,0.04); border: 1px solid rgba(255,61,0,0.18); }
+
+  .example-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 1px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .bad-tag { background: var(--tag-bg); color: var(--muted); }
+  .good-tag { background: rgba(255,61,0,0.1); color: var(--accent); }
+
+  .example-text { font-size: 12.5px; line-height: 1.6; font-weight: 300; }
+  .example-bad .example-text { color: var(--muted); }
+  .example-good .example-text { color: var(--text); }
+
+  .example-arrow { text-align: center; font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--accent); }
+
+  .prompting-rule {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--muted);
+    font-weight: 300;
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+    max-width: 640px;
+  }
+
+  .rule-red { color: var(--text); font-weight: 500; }
+
+  @media (max-width: 700px) {
+    .prompting-section { padding: 48px 20px; }
+    .prompting-diagram, .example-row { grid-template-columns: 1fr; }
+    .diagram-vs, .example-arrow { text-align: center; margin: 8px 0; }
+  }
+
   .filter-bar {
     padding: 16px 40px;
     border-bottom: 1px solid var(--border);
@@ -1280,6 +1444,108 @@
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21"/></svg>
     Watch now
   </a>
+</div>
+
+<div class="featured">
+  <a class="featured-play" href="https://youtu.be/hV5_XSEBZNg?t=300" target="_blank" rel="noopener" aria-label="Watch on YouTube">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <polygon points="6,4 20,12 6,20" fill="white"/>
+    </svg>
+  </a>
+  <div class="featured-meta">
+    <div class="featured-label">Essential Viewing &nbsp;·&nbsp; YouTube &nbsp;·&nbsp; Starts at 5:00</div>
+    <div class="featured-title">Models Need Less Instruction Than You Think</div>
+    <div class="featured-desc">Stop giving Claude a 6-step process. Give it the outcome you want and the right context. It will figure out the rest — better than your steps would have.</div>
+    <div class="featured-topics">
+      <span class="featured-tag">Prompting</span>
+      <span class="featured-tag">Outcomes</span>
+      <span class="featured-tag">Context</span>
+      <span class="featured-tag">Mindset</span>
+    </div>
+  </div>
+  <a class="featured-cta" href="https://youtu.be/hV5_XSEBZNg?t=300" target="_blank" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21"/></svg>
+    Watch now
+  </a>
+</div>
+
+<!-- PROMPTING DIAGRAM SECTION -->
+<div class="prompting-section">
+  <div class="prompting-inner">
+
+    <div class="prompting-header">
+      <div class="prompting-label">How to actually talk to Claude</div>
+      <div class="prompting-headline">Less instruction.<br>More <span>outcome.</span></div>
+      <div class="prompting-sub">Most people over-explain the process and under-explain the goal. Claude is smart enough to figure out the how — if you tell it the what and the why.</div>
+    </div>
+
+    <div class="prompting-diagram">
+
+      <div class="diagram-col wrong">
+        <div class="diagram-col-label">What most people send</div>
+        <div class="diagram-step">Step 1: Do X</div>
+        <div class="diagram-step">Step 2: Then Y</div>
+        <div class="diagram-step">Step 3: Check Z</div>
+        <div class="diagram-step">Step 4: Format it</div>
+        <div class="diagram-step">Step 5: Validate</div>
+        <div class="diagram-step">Step 6: Output</div>
+        <div class="diagram-col-note">You're doing the thinking. Claude's just following orders. The output is only as good as your steps.</div>
+      </div>
+
+      <div class="diagram-vs">→</div>
+
+      <div class="diagram-col right">
+        <div class="diagram-col-label">What Claude actually needs</div>
+        <div class="diagram-outcome">
+          <div class="diagram-outcome-icon">◎</div>
+          <div>
+            <div class="diagram-outcome-title">Desired outcome</div>
+            <div class="diagram-outcome-desc">What does great look like? Who is it for? What does it need to do?</div>
+          </div>
+        </div>
+        <div class="diagram-outcome">
+          <div class="diagram-outcome-icon">☰</div>
+          <div>
+            <div class="diagram-outcome-title">Context</div>
+            <div class="diagram-outcome-desc">Client, tone, constraints, format, what you already know, what you've tried.</div>
+          </div>
+        </div>
+        <div class="diagram-col-note right-note">Claude figures out the how. You focus on whether the output is right. That's the better use of both of you.</div>
+      </div>
+
+    </div>
+
+    <div class="prompting-examples">
+      <div class="prompting-example-label">See the difference in practice</div>
+      <div class="example-row">
+        <div class="example-bad">
+          <div class="example-tag bad-tag">Over-instructed</div>
+          <div class="example-text">"First summarize the email thread, then identify action items, then sort them by priority, then format as a numbered list, then add owner names."</div>
+        </div>
+        <div class="example-arrow">→</div>
+        <div class="example-good">
+          <div class="example-tag good-tag">Outcome-first</div>
+          <div class="example-text">"Here's the email thread. I need to walk into a client meeting in 20 minutes knowing exactly what's unresolved and who owns it. Give me what I need."</div>
+        </div>
+      </div>
+      <div class="example-row">
+        <div class="example-bad">
+          <div class="example-tag bad-tag">Over-instructed</div>
+          <div class="example-text">"Write an intro paragraph, then 3 body sections, then a conclusion, keep it under 400 words, use professional tone, avoid jargon."</div>
+        </div>
+        <div class="example-arrow">→</div>
+        <div class="example-good">
+          <div class="example-tag good-tag">Outcome-first</div>
+          <div class="example-text">"I need to pitch Marriott on our sampling tour concept. They're skeptical about ROI. Write something that earns their trust before it sells anything."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompting-rule">
+      <span class="rule-red">Tell Claude what you need and why.</span> It will figure out the rest better than your instructions would have.
+    </div>
+
+  </div>
 </div>
 
 <div class="filter-bar">
